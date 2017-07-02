@@ -42,8 +42,8 @@ html(lang='en')
             form
                 .circle--fluid
                     .circle--fluid--cell.circle--fluid--primary.align-bottom.app--tweet--post
-                        .app--avatar(style=`background-image: url(${tweetInfo[0].image})`)
-                            img(src= tweetInfo[0].image)
+                        .app--avatar(style='background-image: url(/static/images/m-spore.png)')
+                            img(src='/static/images/m-spore.png')
                         textarea#tweet-textarea.circle--textarea--input(placeholder="What's happening?")
                         strong#tweet-char.app--tweet--char 140
                     .circle--fluid--cell.align-bottom
@@ -243,50 +243,50 @@ html(lang='en')
                             .circle--fluid
                                 .circle--fluid--cell.circle--fluid--primary
                                     a.app--tweet--author
-                                        .app--avatar(style=`background-image: url(${friendsInfo[0].image})`)
-                                            img(src=`${friendsInfo[0].image}`)
-                                        h4= friendsInfo[0].profileName
-                                        p= friendsInfo[0].screenName
+                                        .app--avatar(style=`background-image: url(${friendsPhotos[0]})`)
+                                            img(src=`${friendsPhotos[0]}`)
+                                        h4= friendsList[0]
+                                        p= friendsUsername[0]
                                 .circle--fluid--cell
                                     a.button.button-text Unfollow
                         li
                             .circle--fluid
                                 .circle--fluid--cell.circle--fluid--primary
                                     a.app--tweet--author
-                                        .app--avatar(style=`background-image: url(${friendsInfo[1].image})`)
-                                            img(src=`${friendsInfo[1].image}`)
-                                        h4= friendsInfo[1].profileName
-                                        p= friendsInfo[1].screenName
+                                        .app--avatar(style=`background-image: url(${friendsPhotos[1]})`)
+                                            img(src=`${friendsPhotos[1]}`)
+                                        h4= friendsList[1]
+                                        p= friendsUsername[1]
                                 .circle--fluid--cell
                                     a.button.button-text Unfollow
                         li
                             .circle--fluid
                                 .circle--fluid--cell.circle--fluid--primary
                                     a.app--tweet--author
-                                        .app--avatar(style=`background-image: url(${friendsInfo[2].image})`)
-                                            img(src=`${friendsInfo[2].image}`)
-                                        h4= friendsInfo[2].profileName
-                                        p= friendsInfo[2].screenName
+                                        .app--avatar(style=`background-image: url(${friendsPhotos[2]})`)
+                                            img(src=`${friendsPhotos[2]}`)
+                                        h4= friendsList[2]
+                                        p= friendsUsername[2]
                                 .circle--fluid--cell
                                     a.button.button-text Unfollow
                         li
                             .circle--fluid
                                 .circle--fluid--cell.circle--fluid--primary
                                     a.app--tweet--author
-                                        .app--avatar(style=`background-image: url(${friendsInfo[3].image})`)
-                                            img(src=`${friendsInfo[3].image}`)
-                                        h4= friendsInfo[3].profileName
-                                        p= friendsInfo[3].screenName
+                                        .app--avatar(style=`background-image: url(${friendsPhotos[3]})`)
+                                            img(src=`${friendsPhotos[3]}`)
+                                        h4= friendsList[3]
+                                        p= friendsUsername[3]
                                 .circle--fluid--cell
                                     a.button.button-text Unfollow
                         li
                             .circle--fluid
                                 .circle--fluid--cell.circle--fluid--primary
                                     a.app--tweet--author
-                                        .app--avatar(style=`background-image: url(${friendsInfo[4].image})`)
-                                            img(src=`${friendsInfo[4].image}`)
-                                        h4= friendsInfo[4].profileName
-                                        p= friendsInfo[4].screenName
+                                        .app--avatar(style=`background-image: url(${friendsPhotos[4]})`)
+                                            img(src=`${friendsPhotos[4]}`)
+                                        h4= friendsList[4]
+                                        p= friendsUsername[4]
                                 .circle--fluid--cell
                                     a.button.button-text Unfollow
             .grid-33
@@ -295,68 +295,32 @@ html(lang='en')
                         li
                             h3
                                 | Conversation with 
-                                a= dmInfo[0].profileName
+                                a Jill Spore
                             ul.app--message--conversation
                                 li.app--message
-                                    .app--avatar(style=`background-image: url(${dmInfo[0].image})`)
-                                        img(src= dmInfo[0].image)
-                                    p.app--message--text= dmInfo[0].text
-                                    p.app--message--timestamp= dmInfo[0].time
-                            h3
-                                | Conversation with 
-                                a= dmInfo[1].profileName
-                            ul.app--message--conversation
+                                    .app--avatar(style='background-image: url(images/f-spore.png)')
+                                        img(src='images/f-spore.png')
+                                    p.app--message--text How are things?
+                                    p.app--message--timestamp 3 hours ago
+                                li.app--message--me
+                                    .app--avatar(style='background-image: url(images/m-spore.png)')
+                                        img(src='images/m-spore.png')
+                                    p.app--message--text
+                                        | Great! How about you? Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                    p.app--message--timestamp 2 hours ago
                                 li.app--message
-                                    .app--avatar(style=`background-image: url(${dmInfo[1].image})`)
-                                        img(src= dmInfo[1].image)
-                                    p.app--message--text= dmInfo[1].text
-                                    p.app--message--timestamp= dmInfo[1].time
-                            h3
-                                | Conversation with 
-                                a= dmInfo[2].profileName
-                            ul.app--message--conversation
+                                    .app--avatar(style='background-image: url(images/f-spore.png)')
+                                        img(src='images/f-spore.png')
+                                    p.app--message--text Fantastic! You wanna grab lunch?
+                                    p.app--message--timestamp 2 hours ago
+                                li.app--message--me
+                                    .app--avatar(style='background-image: url(images/m-spore.png)')
+                                        img(src='images/m-spore.png')
+                                    p.app--message--text Totes mcgotes. How about Mackey's?
+                                    p.app--message--timestamp 1 hour ago
                                 li.app--message
-                                    .app--avatar(style=`background-image: url(${dmInfo[2].image})`)
-                                        img(src= dmInfo[2].image)
-                                    p.app--message--text= dmInfo[2].text
-                                    p.app--message--timestamp= dmInfo[2].time
-                            h3
-                                | Conversation with 
-                                a= dmInfo[3].profileName
-                            ul.app--message--conversation
-                                li.app--message
-                                    .app--avatar(style=`background-image: url(${dmInfo[3].image})`)
-                                        img(src= dmInfo[3].image)
-                                    p.app--message--text= dmInfo[3].text
-                                    p.app--message--timestamp= dmInfo[3].time    
-                            h3
-                                | Conversation with 
-                                a= dmInfo[4].profileName
-                            ul.app--message--conversation
-                                li.app--message
-                                    .app--avatar(style=`background-image: url(${dmInfo[4].image})`)
-                                        img(src= dmInfo[4].image)
-                                    p.app--message--text= dmInfo[4].text
-                                    p.app--message--timestamp= dmInfo[4].time    
-                                //- li.app--message--me
-                                //-     .app--avatar(style='background-image: url(images/m-spore.png)')
-                                //-         img(src='images/m-spore.png')
-                                //-     p.app--message--text
-                                //-         | Great! How about you? Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                //-     p.app--message--timestamp 2 hours ago
-                                //- li.app--message
-                                //-     .app--avatar(style='background-image: url(images/f-spore.png)')
-                                //-         img(src='images/f-spore.png')
-                                //-     p.app--message--text Fantastic! You wanna grab lunch?
-                                //-     p.app--message--timestamp 2 hours ago
-                                //- li.app--message--me
-                                //-     .app--avatar(style='background-image: url(images/m-spore.png)')
-                                //-         img(src='images/m-spore.png')
-                                //-     p.app--message--text Totes mcgotes. How about Mackey's?
-                                //-     p.app--message--timestamp 1 hour ago
-                                //- li.app--message
-                                //-     .app--avatar(style='background-image: url(images/f-spore.png)')
-                                //-         img(src='images/f-spore.png')
-                                //-     p.app--message--text Aww yeah.. I'm craving a Triple Quarter Mack!
-                                //-     p.app--message--timestamp 1 hour ago
+                                    .app--avatar(style='background-image: url(images/f-spore.png)')
+                                        img(src='images/f-spore.png')
+                                    p.app--message--text Aww yeah.. I'm craving a Triple Quarter Mack!
+                                    p.app--message--timestamp 1 hour ago
 
