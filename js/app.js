@@ -7,6 +7,7 @@ let username = '@';
 let friendsList = [];
 let friendsUsername = [];
 let friends;
+let friendsPhotos = [];
 let messageText = [];
 let contact = [];
 let messageTimes = [];
@@ -15,7 +16,7 @@ let messageTimes = [];
 app.set('view engine', 'pug');
 
 app.get('/', (req, res) => {
-	res.render('layout', {username, friends, friendsList, friendsUsername, messageText, contact, messageTimes });
+	res.render('layout', {username, friends, friendsList, friendsUsername, friendsPhotos, messageText, contact, messageTimes });
 });
 
 app.use('/static', express.static('public'));
@@ -35,13 +36,16 @@ T.get('friends/list', function(err, data, res) {
 	for (let i = 0; i < 5; i++) {
 		friendsList.push(data.users[i].name);
 		friendsUsername.push(data.users[i].screen_name);
+		friendsPhotos.push(data.users[i].profile_image_url);
+		console.log(friendsPhotos);
 	}
 })
 
 T.get('direct_messages/events/list', function(err, data, res) {
 	if (!err) {
 		for (let i = 0; i < 5; i++) {
-			messageText.push(data.events[i].message_create.message_data.text);
+			let messageContent = data.events[i].message_create.message_data.text;
+			
 			T.get('users/lookup', { user_id: data.events[i].message_create.target.recipient_id}, function(err, data, res) {
 				if (data[0].screen_name == username) {
 					//do nothing	
@@ -56,8 +60,10 @@ T.get('direct_messages/events/list', function(err, data, res) {
 					contact.push(data[0].screen_name);
 				}
 			});
+			messageText.push(messageContent);
 			let time = new Date(parseInt(data.events[i].created_timestamp)).toLocaleString();
-			messageTimes.push(time)
+			messageTimes.push(time);
+
 		}
 	} else {
 		console.log(`Error # ${err.code} : ${err.message}`)
@@ -65,4 +71,5 @@ T.get('direct_messages/events/list', function(err, data, res) {
 })
 
 app.listen(3000);
+//console.log();
 
