@@ -5,9 +5,16 @@ const T = new Twit(config);
 const app = express();
 let username = '@';
 let friends;
+let myInfo = [];
 let tweetInfo = [];
 let dmInfo = [];
 let friendsInfo = [];
+
+function personal(screenName, numOfFriends, bgImage) {
+	this.name = screenName;
+	this.friends = numOfFriends;
+	this.image = bgImage;
+}
 
 function tweet(name, screenName, content, imageUrl, retweets, favorites, time) {
 	this.profileName = name;
@@ -35,8 +42,12 @@ function dm(name, content, imageUrl, time) {
 
 app.set('view engine', 'pug');
 
+app.get('/error', (req, res) => {
+	res.render('error');
+});
+
 app.get('/', (req, res) => {
-	res.render('layout', {username, friends, friendsInfo, tweetInfo, dmInfo });
+	res.render('layout', {myInfo, friendsInfo, tweetInfo, dmInfo });
 	// button = document.getElementsByTagName('button');
 	// messageInput = document.getElementsByTagName('input');
 
@@ -55,9 +66,14 @@ T.get('account/verify_credentials', { skip_status: true })
     console.log('caught error', err.stack)
   })
   .then(function (result) {
-    username += result.data.screen_name;
-    friends = result.data.friends_count;
-    parseInt(friends);
+  	let myName = `@${result.data.screen_name}`;
+    let myFriends = parseInt(result.data.friends_count);
+    let bgImage = result.data.profile_background_image_url;
+    myInfo= new personal(myName, myFriends, bgImage)
+    console.log(result.data)
+
+
+ 
   });
 
 T.get('friends/list', function(err, data, res) {
@@ -70,19 +86,33 @@ T.get('friends/list', function(err, data, res) {
 	}
 });
 
-T.get('statuses/user_timeline', {screenName: username, count : 5}, function(err, data, res) {
-	for (let i = 0; i < 5; i++) {
-		let tweetContent = data[i].text;
-		let tweetName = data[i].user.name;
-		let tweetScreename = data[i].user.screen_name;
-		let tweetImageUrl = data[i].user.profile_image_url; 
-		let tweetRetweetCount = data[i].retweet_count;
-		let tweetFavoriteCount = data[i].favorite_count;
-		let tweetTimer = new Date(data[i].created_at).toLocaleString();
-		tweetInfo.push(new tweet(tweetName, tweetScreename, tweetContent, tweetImageUrl, tweetRetweetCount, tweetFavoriteCount, tweetTimer));
-	}
+function updateTweets() {
+	T.get('statuses/user_timeline', {screenName: username, count : 5}, function(err, data, res) {
+		for (let i = 0; i < 5; i++) {
+			let tweetContent = data[i].text;
+			let tweetName = data[i].user.name;
+			let tweetScreename = data[i].user.screen_name;
+			let tweetImageUrl = data[i].user.profile_image_url; 
+			let tweetRetweetCount = data[i].retweet_count;
+			let tweetFavoriteCount = data[i].favorite_count;
+			let tweetTimer = new Date(data[i].created_at).toLocaleString();
+			tweetInfo.unshift(new tweet(tweetName, tweetScreename, tweetContent, tweetImageUrl, tweetRetweetCount, tweetFavoriteCount, tweetTimer));
+		}
+	});
+}
 
-});
+T.get('statuses/user_timeline', {screenName: username, count : 5}, function(err, data, res) {
+		for (let i = 0; i < 5; i++) {
+			let tweetContent = data[i].text;
+			let tweetName = data[i].user.name;
+			let tweetScreename = data[i].user.screen_name;
+			let tweetImageUrl = data[i].user.profile_image_url; 
+			let tweetRetweetCount = data[i].retweet_count;
+			let tweetFavoriteCount = data[i].favorite_count;
+			let tweetTimer = new Date(data[i].created_at).toLocaleString();
+			tweetInfo.push(new tweet(tweetName, tweetScreename, tweetContent, tweetImageUrl, tweetRetweetCount, tweetFavoriteCount, tweetTimer));
+		}
+	});
 
 T.get('direct_messages', {count : 5}, function(err, data, res) {
 	for (let i = 0; i < 5; i++) {
@@ -95,7 +125,7 @@ T.get('direct_messages', {count : 5}, function(err, data, res) {
 	}
 });
 
-
+setInterval(updateTweets, 1000)
 // T.get('direct_messages/events/list', function(err, data, res) {
 // 	if (!err) {
 // 		for (let i = 0; i < 5; i++) {
