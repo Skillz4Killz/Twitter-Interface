@@ -1,6 +1,8 @@
 const express = require('express');
 const config = require('./config');
 const Twit = require('twit');
+const bodyParser = require('body-parser');
+const io = require('socket.io');
 const T = new Twit(config);
 const app = express();
 let username = '@';
@@ -39,6 +41,7 @@ function dm(name, content, imageUrl, time) {
 	this.time = time;
 }
 
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'pug');
 
@@ -48,15 +51,6 @@ app.get('/error', (req, res) => {
 
 app.get('/', (req, res) => {
 	res.render('layout', {myInfo, friendsInfo, tweetInfo, dmInfo });
-	// button = document.getElementsByTagName('button');
-	// messageInput = document.getElementsByTagName('input');
-
-	// button.addEventListener('click', () => {
-
-	// // 	T.post('statuses/update', {status}, function(err, data, res) {
-
-	// // });
-	// })
 });
 
 app.use('/static', express.static('public'));
@@ -70,10 +64,6 @@ T.get('account/verify_credentials', { skip_status: true })
     let myFriends = parseInt(result.data.friends_count);
     let bgImage = result.data.profile_background_image_url;
     myInfo= new personal(myName, myFriends, bgImage)
-    console.log(result.data)
-
-
- 
   });
 
 T.get('friends/list', function(err, data, res) {
@@ -125,36 +115,25 @@ T.get('direct_messages', {count : 5}, function(err, data, res) {
 	}
 });
 
-setInterval(updateTweets, 1000)
-// T.get('direct_messages/events/list', function(err, data, res) {
-// 	if (!err) {
-// 		for (let i = 0; i < 5; i++) {
-// 			let messageContent = data.events[i].message_create.message_data.text;
-			
-// 			T.get('users/lookup', { user_id: data.events[i].message_create.target.recipient_id}, function(err, data, res) {
-// 				if (data[0].screen_name == username) {
-// 					//do nothing	
-// 				} else {
-// 					contact.push(data[0].screen_name);
-// 				}	
-// 			});
-// 			T.get('users/lookup', { user_id: data.events[i].message_create.sender_id}, function(err, data, res) {
-// 				if (data[0].screen_name == username) {
-// 					//do nothing	
-// 				} else {
-// 					contact.push(data[0].screen_name);
-// 				}
-// 			});
-// 			messageText.push(messageContent);
-// 			let time = new Date(parseInt(data.events[i].created_timestamp)).toLocaleString();
-// 			messageTimes.push(time);
+app.post('/', (req, res) => {
+	let tweetMessage = req.body.name;
+	T.post('statuses/update', {status: tweetMessage}, function(err, data, res) {
+		res.redirect('/');
+	});
+});
 
-// 		}
-// 	} else {
-// 		console.log(`Error # ${err.code} : ${err.message}`)
-// 	}
-// })
+let stream = T.stream('users');
+stream.on('tweet', function(stream) {
+  stream.on('data', function (data) {
+    io.sockets.emit('tweet', data.text);
+    console.log(data);
+  });
+  console.log('stream on')
+});
+      
+setInterval(updateTweets, 1000);
 
 app.listen(3000);
 //console.log();
+//
 

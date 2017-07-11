@@ -22,8 +22,10 @@
   },
   "homepage": "https://github.com/Skillz4Killz/Twitter-Interface#readme",
   "dependencies": {
+    "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "pug": "^2.0.0-rc.2",
+    "socket.io": "^2.0.3",
     "twit": "^2.2.9"
   }
 }
